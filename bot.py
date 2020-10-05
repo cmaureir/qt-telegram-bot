@@ -60,7 +60,7 @@ def meetings(update, context):
     )
 
 
-def help_handler(update, context):
+def qthelp_handler(update, context):
     msg = (
         "```\n"
         "/help     - This message\n"
@@ -208,7 +208,7 @@ if __name__ == "__main__":
     dispatcher.add_handler(CommandHandler("test", control_test))
     dispatcher.add_handler(CommandHandler("doc", doc))
     dispatcher.add_handler(CommandHandler("module", module))
-    dispatcher.add_handler(CommandHandler("qthelp", help_handler))
+    dispatcher.add_handler(CommandHandler("qthelp", qthelp_handler))
     dispatcher.add_handler(CommandHandler("issue", issue))
     dispatcher.add_handler(CommandHandler("gerrit", gerrit))
     dispatcher.add_handler(CommandHandler("meetings", meetings))
