@@ -17,3 +17,20 @@ on the [JIRA bugtracker](https://bugreports.qt.io/browse/PYSIDE)
 /gerrit   - Link to the latest open changes
 /meetings - Link to the public meeting notes
 ```
+
+## Instalation
+
+To implement this on a separate bot, remember to register your own
+[with the BotFather](https://core.telegram.org/bots), so you can provide
+your Token in the required configuration file, called `config.ini`.
+The file should look like this:
+
+```
+[DEFAULT]
+Token=123456
+```
+
+where the numbers will be the Token code you get after the registration.
+
+After that, a simple `pip install -r requirements.txt` in your virtual
+environment will be enough to get you started.
