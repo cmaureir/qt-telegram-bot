@@ -18,7 +18,7 @@ on the [JIRA bugtracker](https://bugreports.qt.io/browse/PYSIDE)
 /meetings - Link to the public meeting notes
 ```
 
-## Instalation
+## Installation
 
 To implement this on a separate bot, remember to register your own
 [with the BotFather](https://core.telegram.org/bots), so you can provide
