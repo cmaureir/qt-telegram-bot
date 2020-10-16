@@ -1,6 +1,6 @@
 # Qt Telegram Bot
 
-Simple bot for the [Qt for Python](https://pyside.org) telegram channel.
+Simple bot for the [Qt for Python](https://pyside.org) telegram [channel](https://t.me/qtforpython).
 
 Currently the interaction is limited to provide information links
 regarding the documentation, other Python modules, and the issues
