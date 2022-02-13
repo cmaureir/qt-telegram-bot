@@ -63,7 +63,7 @@ def meetings(update, context):
 def qthelp_handler(update, context):
     msg = (
         "```\n"
-        "/help     - This message\n"
+        "/qthelp     - This message\n"
         "/issue N  - Information about the PYSIDE-N issue\n"
         "          - Without arguments it shows a summary\n"
         "/doc      - Links to documentation\n"
@@ -179,7 +179,6 @@ def welcome(update, context):
         wiki_url = "https://pyside.org"
         msg = (
             f"Welcome {new_user} {party} {confetti}\n"
-            f"Verify you are not a bot solving the captcha!\n\n"
             f"Remember to check the documentation page {doc_url} "
             f"and the wiki {wiki_url} "
             f"if you have some questions.\n"
