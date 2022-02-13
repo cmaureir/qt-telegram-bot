@@ -1,5 +1,6 @@
 import configparser
 import logging
+import time
 from pprint import pprint
 
 import telegram
@@ -12,7 +13,7 @@ from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
 def escape(x):
     special = [".", "-", "(", ")", "[", "]", ">", "<", "=", "+", "{", "}", "#", "_"]
     for c in special:
-        x = x.replace(c, fr"\{c}")
+        x = x.replace(c, rf"\{c}")
     return x
 
 
@@ -41,6 +42,7 @@ def doc(update, context):
         parse_mode=telegram.ParseMode.MARKDOWN_V2,
     )
 
+
 def gerrit(update, context):
     gerrit_url = r"https://codereview.qt-project.org/q/project:pyside%252Fpyside-setup+status:open"
     msg = f"Gerrit Code Review\n`pyside-setup` repository: [latest changes]({gerrit_url})"
@@ -49,6 +51,7 @@ def gerrit(update, context):
         text=msg,
         parse_mode=telegram.ParseMode.MARKDOWN_V2,
     )
+
 
 def meetings(update, context):
     meetings_url = r"https://wiki.qt.io/Qt_for_Python_Development_Notes"
@@ -63,19 +66,31 @@ def meetings(update, context):
 def qthelp_handler(update, context):
     msg = (
         "```\n"
-        "/qthelp     - This message\n"
+        "/qthelp   - This message\n"
         "/issue N  - Information about the PYSIDE-N issue\n"
-        "          - Without arguments it shows a summary\n"
+        "            Without arguments it shows a summary\n"
         "/doc      - Links to documentation\n"
         "/module   - Differences between PyQt/PySide\n"
         "/gerrit   - Link to the latest open changes\n"
         "/meetings - Link to the public meeting notes\n"
         "```"
     )
-    context.bot.send_message(
+
+    context.bot.delete_message(
+        chat_id=update.effective_chat.id,
+        message_id=update.effective_message.message_id,
+    )
+
+    help_message = context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=msg,
         parse_mode=telegram.ParseMode.MARKDOWN_V2,
+    )
+    # Remove help message after 1 minute
+    time.sleep(60)
+    context.bot.delete_message(
+        chat_id=update.effective_chat.id,
+        message_id=help_message.message_id,
     )
 
 
@@ -184,12 +199,21 @@ def welcome(update, context):
             f"if you have some questions.\n"
         )
 
-        context.bot.send_message(chat_id=chat_id, text=msg, parse_mode="HTML")
+        welcome_message = context.bot.send_message(chat_id=chat_id, text=msg, parse_mode="HTML")
+        # Remove welcome message after 1 minute
+        time.sleep(60)
+        context.bot.delete_message(
+            chat_id=update.effective_chat.id,
+            message_id=welcome_message.message_id,
+        )
+
 
 def unknown(update, context):
-    context.bot.send_message(chat_id=update.message.chat.id,
-                             text="Command not found, check `/help`",
-                             parse_mode=telegram.ParseMode.MARKDOWN_V2)
+    context.bot.send_message(
+        chat_id=update.message.chat.id,
+        text="Command not found, check `/help`",
+        parse_mode=telegram.ParseMode.MARKDOWN_V2,
+    )
 
 
 if __name__ == "__main__":
@@ -207,12 +231,15 @@ if __name__ == "__main__":
     dispatcher.add_handler(CommandHandler("test", control_test))
     dispatcher.add_handler(CommandHandler("doc", doc))
     dispatcher.add_handler(CommandHandler("module", module))
-    dispatcher.add_handler(CommandHandler("qthelp", qthelp_handler))
+    dispatcher.add_handler(CommandHandler("qthelp", qthelp_handler, run_async=True))
     dispatcher.add_handler(CommandHandler("issue", issue))
     dispatcher.add_handler(CommandHandler("gerrit", gerrit))
     dispatcher.add_handler(CommandHandler("meetings", meetings))
     dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
-    dispatcher.add_handler(MessageHandler(Filters.status_update.new_chat_members, welcome))
+    dispatcher.add_handler(
+        MessageHandler(Filters.status_update.new_chat_members, welcome, run_async=True)
+    )
 
     updater.start_polling()
+    updater.idle()
