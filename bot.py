@@ -33,8 +33,8 @@ def control_test(update, context):
 def doc(update, context):
     doc_url = r"https://doc\.qt\.io/qtforpython/"
     wiki_url = r"https://pyside\.org"
-    icon1 = emojize(":green_book:", use_aliases=True)
-    icon2 = emojize(":notebook:", use_aliases=True)
+    icon1 = emojize(":green_book:", language='alias')
+    icon2 = emojize(":notebook:", language='alias')
     msg = f"{icon1} Documentation: {doc_url}\n" f"{icon2} Wiki: {wiki_url}"
     context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -97,7 +97,7 @@ def qthelp_handler(update, context):
 def module(update, context):
     pyqt_url = r"https://www\.riverbankcomputing\.com/software/pyqt/intro"
     pyside_url = r"https://qt\.io/qt-for-python"
-    snake = emojize(":snake:", use_aliases=True)
+    snake = emojize(":snake:", language='alias')
     msg = (
         f"{snake} Python modules\n\n"
         f"• [PySide]({pyside_url}): Developed by The Qt Company \(LGPL/Commercial\)\n"
@@ -118,7 +118,7 @@ def issue(update, context):
     base_url = "https://bugreports.qt.io/browse/"
     content = ""
     link = ""
-    error_icon = emojize(":x:", use_aliases=True)
+    error_icon = emojize(":x:", language='alias')
     try:
         arg = context.args[0]
         arg = arg.replace("PYSIDE-", "")
@@ -148,11 +148,11 @@ def issue(update, context):
         if status:
             icon = ""
             if status == "Open":
-                icon = emojize(":large_blue_circle:", use_aliases=True)
+                icon = emojize(":large_blue_circle:", language='alias')
             elif status == "Closed":
-                icon = emojize(":white_check_mark:", use_aliases=True)
+                icon = emojize(":white_check_mark:", language='alias')
             else:
-                icon = emojize(":red_circle:", use_aliases=True)
+                icon = emojize(":red_circle:", language='alias')
             msg += f"\n*Status*: {icon} {status}"
 
     except IndexError:
@@ -160,7 +160,7 @@ def issue(update, context):
             "project=PYSIDE and resolution=Unresolved and type=Bug order by created DESC",
             maxResults=200,
         )
-        icon = emojize(":information_source:", use_aliases=True)
+        icon = emojize(":information_source:", language='alias')
         msg = f"*Total open issues*: {len(issues)}\n\nLast 5 open issues:"
         for issue in issues[:5]:
             key = issue.key
@@ -188,8 +188,8 @@ def welcome(update, context):
         except Exception:
             new_user = new_user_obj["first_name"]
 
-        party = emojize(":tada:", use_aliases=True)
-        confetti = emojize(":confetti_ball:", use_aliases=True)
+        party = emojize(":tada:", language='alias')
+        confetti = emojize(":confetti_ball:", language='alias')
         doc_url = "https://doc.qt.io/qtforpython/"
         wiki_url = "https://pyside.org"
         msg = (
